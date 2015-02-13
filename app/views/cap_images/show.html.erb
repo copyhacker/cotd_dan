@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Url:</strong>
+  <%= @cap_image.url %>
+</p>
+
+<p>
+  <strong>Like count:</strong>
+  <%= @cap_image.like_count %>
+</p>
+
+<%= link_to 'Edit', edit_cap_image_path(@cap_image) %> |
+<%= link_to 'Back', cap_images_path %>

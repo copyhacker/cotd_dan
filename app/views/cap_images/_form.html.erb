@@ -1,0 +1,25 @@
+<%= form_for(@cap_image) do |f| %>
+  <% if @cap_image.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@cap_image.errors.count, "error") %> prohibited this cap_image from being saved:</h2>
+
+      <ul>
+      <% @cap_image.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :url %><br>
+    <%= f.text_field :url %>
+  </div>
+  <div class="field">
+    <%= f.label :like_count %><br>
+    <%= f.number_field :like_count %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
