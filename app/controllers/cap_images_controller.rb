@@ -5,6 +5,8 @@ class CapImagesController < ApplicationController
   # GET /cap_images.json
   def index
     @cap_images = CapImage.all
+
+    render template: "cap_images/index"
   end
 
   # GET /cap_images/1
