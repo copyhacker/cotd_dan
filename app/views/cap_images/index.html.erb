@@ -1,29 +1,8 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Cap Images</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Url</th>
-      <th>Like count</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @cap_images.each do |cap_image| %>
-      <tr>
-        <td><%= cap_image.url %></td>
-        <td><%= cap_image.like_count %></td>
-        <td><%= link_to 'Show', cap_image %></td>
-        <td><%= link_to 'Edit', edit_cap_image_path(cap_image) %></td>
-        <td><%= link_to 'Destroy', cap_image, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
+<h1>Capybara of the goddamned day</h1>
+<div id='cotd-container'>
+  <div><%= @cap_image.url %></div>
+  <div><%= @cap_image.like_count %></div>
+</div>
 <br>
-
-<%= link_to 'New Cap image', new_cap_image_path %>

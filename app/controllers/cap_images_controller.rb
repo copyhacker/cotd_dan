@@ -4,9 +4,17 @@ class CapImagesController < ApplicationController
   # GET /cap_images
   # GET /cap_images.json
   def index
-    @cap_images = CapImage.all
+    @cap_image = CapImage.all.first
 
     render template: "cap_images/index"
+  end
+
+  def like
+    # if the current image exists
+    # increment it's like_count by 1
+    # if it doesn't exist in the DB
+    # create the image and set the like_coumt to 1
+
   end
 
   # GET /cap_images/1
@@ -39,35 +47,14 @@ class CapImagesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /cap_images/1
-  # PATCH/PUT /cap_images/1.json
-  def update
-    respond_to do |format|
-      if @cap_image.update(cap_image_params)
-        format.html { redirect_to @cap_image, notice: 'Cap image was successfully updated.' }
-        format.json { render :show, status: :ok, location: @cap_image }
-      else
-        format.html { render :edit }
-        format.json { render json: @cap_image.errors, status: :unprocessable_entity }
-      end
-    end
-  end
 
-  # DELETE /cap_images/1
-  # DELETE /cap_images/1.json
-  def destroy
-    @cap_image.destroy
-    respond_to do |format|
-      format.html { redirect_to cap_images_url, notice: 'Cap image was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_cap_image
-      @cap_image = CapImage.find(params[:id])
+
+    def fetch_random
+      # Hit the images API and rpull that random image
     end
+
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def cap_image_params
