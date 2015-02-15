@@ -1,0 +1,1 @@
+cap_images_spec.rb
