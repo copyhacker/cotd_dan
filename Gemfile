@@ -29,6 +29,8 @@ gem 'google-api-client'
 gem 'database_cleaner'
 gem 'factory_girl'
 gem 'pry'
+gem 'rubocop'
+gem 'awesome_print'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

@@ -1,52 +1,56 @@
+require 'json'
+require 'net/http'
+require 'uri'
+
 module ImageSearchDsl
   extend ActiveSupport::Concern
 
   included do
     # here's where we can put code that
     # stuff that can pork-out some models
-    # ...stuff like a bunch of scopes, lambdas,
+    # ...stuff that maybe could be shared by
+    # more than one model, or has multi-model
+    # logic going on
     # or whatever
   end
 
   module ClassMethods
-    #
-    def fetchRandomImage(search_term)
-      #search the api with search term (if exists)
-
+    def fetch_random_image(search_term = '')
       # Apparently the google search api is depricated
       # Eff it.  It still works.
-      # url = 'https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q={search_term}'
+      search_query = '&q=capybara'
+      search_query += search_term ? '+' + search_term : ''
 
-      #  Here's a little JSON snack of that result
-      #  + Let's dig in to the API params and see if we can't
-      #    just return the imageID and URL
-      #  + Let's use that Image ID as an identifier in our model.
-      #    If it's good enough for Google (in this case), it's good
-      #    enough for me.
-      #   {
-      #     responseData: {
-      #     results: [
-      #     - {
-      #          GsearchResultClass: "GimageSearch",
-      #          width: "800",
-      #          height: "599",
-      #          imageId: "ANd9GcQSIECHDzF1epvTby2d992cfd1Esy8dDEc8YTUVwIV_LWoMweA9XHYu2w5R",
-      #          tbWidth: "143",
-      #          tbHeight: "107",
-      #          unescapedUrl: "http://a-z-animals.com/media/animals/images/original/capybara5.jpg",
-      #          url: "http://a-z-animals.com/media/animals/images/original/capybara5.jpg",
-      #          visibleUrl: "a-z-animals.com",
-      #          title: "<b>Capybara</b> (Hydrochoerus hydrochaeris) - Animals - A-Z Animals <b>...</b>",
-      #          titleNoFormatting: "Capybara (Hydrochoerus hydrochaeris) - Animals - A-Z Animals ...",
-      #          originalContextUrl: "http://a-z-animals.com/animals/capybara/",
-      #          content: "Male <b>Capybara</b> at Prague Zoo",
-      #          contentNoFormatting: "Male Capybara at Prague Zoo",
-      #          tbUrl: "http://t2.gstatic.com/images?q=tbn:ANd9GcQSIECHDzF1epvTby2d992cfd1Esy8dDEc8YTUVwIV_LWoMweA9XHYu2w5R"
-      #       },
+      response = call_google_api(search_query)
+      if response.code == '200'
+        result = JSON.parse(response.body)
+        res_images = result['responseData']['results']
+        img = res_images[rand(res_images.length)]
+        cap_image = fetch_cap_image(img)
+      else
+        cap_image = false
+      end
+      cap_image
     end
 
-    def scrapeCurlResults(search_results)
-      # i hope I don't have to do this.
+    def call_google_api(search_query = '')
+      api_url = 'https://ajax.googleapis.com/ajax/services/search/images?v=1.0' + search_query
+      uri = URI.parse(api_url)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE # Sets the HTTPS verify mode
+      http.get(uri.request_uri)
+    end
+
+    # REFACTOR?
+    # Maybe this one ought to go in the model
+    def fetch_cap_image(random_image)
+      cap_image = CapImage.where(google_image_id: random_image['imageId'].to_s,
+                                 url: random_image['url'])
+                          .first_or_create
+      cap_image.like_count = cap_image.like_count ? cap_image.like_count : 0
+      cap_image
+
     end
   end
 end

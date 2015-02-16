@@ -1,8 +1,27 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Capybara of the goddamned day</h1>
+<h1>Capybara Of The Day</h1>
+
 <div id='cotd-container'>
-  <div><%= @cap_image.url %></div>
-  <div><%= @cap_image.like_count %></div>
-</div>
-<br>
+  <% if flash[:alert] %>
+    <div class="alert"><%= flash[:alert] %></div>
+  <% end %>
+
+  <div id="cap-image-container">
+    <img src='<%= @cap_image.url %>' id="cap_image"/></div>
+  <div>
+  <div id='cap_image_url'>
+    <a href='<%= @cap_image.url %>' target='_blank'><%= @cap_image.url %></a>
+  </div>
+  <input type="hidden" id="image_id" value="<%= @cap_image.google_image_id %>"
+  <div>
+    <label for="cap_image_like_count">Likes:</label>
+    <div id='cap_image_like_count'>
+      <span><%= @cap_image.like_count %></span>
+    </div>
+    <div>
+      <form name="like-image" action="/cotd/<%= @cap_image.google_image_id %>/like" method="GET">
+        <button type="submit" id="like_button">Like</button>
+      </form>
+  </div>
+<br />
