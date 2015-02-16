@@ -15,10 +15,4 @@ describe CapImagesController do
     end
   end
 
-  # describe "GET like" do
-  #   it "has a 200 status code" do
-  #     get :like
-  #     expect(response.status).to eq(200)
-  #   end
-  # end
 end
