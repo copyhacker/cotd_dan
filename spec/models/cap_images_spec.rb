@@ -1,1 +1,1 @@
-cap_images_spec.rb
+#cap images model spec
